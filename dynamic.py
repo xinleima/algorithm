@@ -1,4 +1,6 @@
 import copy
+import math
+
 def select_coin(coin_value_list, total_coin_value):
     min_coin_num = [0]
     select_coin_list = []
@@ -50,7 +52,31 @@ def LIS(old_list):
     return lis_max
 
 
-t
+def lis2(old_list):
+    b_list = []
+    b_list.append(old_list[0])
+    for i in range(1,len(old_list)):
+        if old_list[i]>=b_list[-1]:
+            b_list.append(old_list[i])
+        else:
+            pos = binary_search(old_list[i], b_list,0, len(b_list)-1)
+            b_list[pos] = old_list[i]
+            print(b_list)
+    return len(b_list)
+
+
+def binary_search(search_number, search_list,left, right):
+    if left == right:
+        return right
+    else:
+        mid = int((left+right)/2)
+        if search_number >= search_list[mid]:
+            return binary_search(search_number,search_list, mid+1, right)
+
+
+        else:
+            return binary_search(search_number,search_list, left, mid)
+
 
 if __name__ == '__main__':
     # coin_value_list = [1, 3, 5]
@@ -62,5 +88,9 @@ if __name__ == '__main__':
     # max_weight = 10
     # print(bag(item_weight_list, item_value_list, max_weight))
 
-    old_list = [2, 1, 5, 3, 6, 4, 8, 9, 7]
-    print(LIS(old_list))
+    # old_list = [2, 1, 5, 3, 6, 4, 8, 9, 7]
+    # print(LIS(old_list))
+
+    # print(binary_search(11,[1,3,5,8,10,12,13], 0, 6))
+
+    print(lis2([2, 1, 5, 3, 6, 4, 8, 9, 7]))
