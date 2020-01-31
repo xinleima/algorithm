@@ -78,6 +78,25 @@ def binary_search(search_number, search_list,left, right):
             return binary_search(search_number,search_list, left, mid)
 
 
+def lci(s1,s2):
+    d = [[0]*len(s2) for i in range(len(s1))]
+    for i in range(0,len(s1)):
+        for j in range(0,len(s2)):
+            if s1[i] == s2[j]:
+                if i != 0 and j != 0:
+                    d[i][j] = copy.deepcopy(d[i - 1][j - 1]) + 1
+                else:
+                    d[i][j] = 1
+            else:
+                if i != 0 and j != 0:
+                    d[i][j] = max(copy.deepcopy(d[i - 1][j]), copy.deepcopy(d[i][j - 1]))
+                else:
+                    d[i][j] = 0
+
+    print(d)
+    return d[len(s1)-1][len(s2)-1]
+
+
 if __name__ == '__main__':
     # coin_value_list = [1, 3, 5]
     # total_coin_value = 11
@@ -93,4 +112,8 @@ if __name__ == '__main__':
 
     # print(binary_search(11,[1,3,5,8,10,12,13], 0, 6))
 
-    print(lis2([2, 1, 5, 3, 6, 4, 8, 9, 7]))
+    # print(lis2([2, 1, 5, 3, 6, 4, 8, 9, 7]))
+
+    s1 = [1, 3, 4, 5, 6, 7, 7, 8]
+    s2 = [3, 5, 7, 4, 8, 6, 7, 8, 2]
+    print(lci(s1,s2))
