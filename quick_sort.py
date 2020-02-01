@@ -1,3 +1,4 @@
+import copy
 # def quick_sort(old_list, left, right):
 #     # print(left,right)
 #     if left > right:
@@ -52,7 +53,7 @@ def quick_sort(s1,left,right):
                     break
                 pos_left += 1
 
-            if pos_left >= pos_right:
+            if pos_left == pos_right:
                 s1[pos_right] = basic
                 print(pos_right)
                 print(s1)
@@ -63,11 +64,86 @@ def quick_sort(s1,left,right):
     return s1
 
 
+def merge_sort(s1, left, right):
+    if left == right:
+        return [s1[left]]
+    else:
+        mid = int((left+right)/2)
+        s2 = merge_sort(s1, left, mid)
+        s3 = merge_sort(s1, mid+1, right)
+        return merge(s2,s3)
 
+
+def merge(s1,s2):
+    i = j = 0
+    s3 = []
+    while i < len(s1) and j < len(s2):
+        if s1[i] < s2[j]:
+            s3.append(s1[i])
+            i += 1
+        else:
+            s3.append(s2[j])
+            j += 1
+    if i < len(s1):
+        s3 = s3 + copy.deepcopy([s1[x] for x in range(i,len(s1))])
+    if j < len(s2):
+        s3 = s3 + copy.deepcopy([s2[x] for x in range(j,len(s2))])
+    return s3
+
+
+def heap_init(s1):
+    start = int(len(s1)/2)-1
+    while start >= 0:
+        print(start)
+        adjust_heap(s1, start, len(s1)-1)
+        start -= 1
+    return s1
+
+
+def adjust_heap(s1,begin,end):
+    current = begin
+    tmp = s1[current]
+    left = current * 2 + 1
+    right = left + 1
+    max_pos = left
+
+    while left <= end:
+
+        if right <= end and s1[left] < s1[right]:
+            max_pos = right
+
+        if tmp < s1[max_pos]:
+            s1[current] = s1[max_pos]
+            current = max_pos
+            left = current * 2 + 1
+            right = left + 1
+            max_pos = left
+
+        else:
+            break
+
+    s1[current] = tmp
+
+
+def heap_sort(s1):
+    s1 = heap_init(s1)
+    i = len(s1)-1
+
+    while i >=1:
+        s1[i], s1[0] = s1[0], s1[i]
+        adjust_heap(s1,0,i-1)
+        print(s1)
+        i -=1
+    return s1
 
 if __name__ == '__main__':
     old_list= [6, 1, 2, 7, 9, 3, 4, 5, 10, 8]
+    #
+    # print(quick_sort(old_list,0,9))
 
-    print(quick_sort(old_list,0,9))
+    # s1 = [4,5,7,8]
+    # s2 = [1,2,3,6]
+    print(heap_sort(old_list))
+
 
 
