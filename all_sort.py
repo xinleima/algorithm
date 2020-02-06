@@ -195,8 +195,134 @@ def selection_sort(s1):
     return s1
 
 
+def countsort(s1):
+    min = 0
+    max = 0
+    for i in range(len(s1)):
+        if s1[i]>max:
+            max = s1[i]
+        if s1[i]<min:
+            min = s1[i]
+
+    a_len = max - min + 1
+    a = [0] * a_len
+    s2 = []
+    for i in range(len(s1)):
+        index = s1[i] - min
+        a[index] += 1
+    for i in range(a_len):
+        s2 = s2 + [i+min]*a[i]
+    return s2
+
+
+class Node(object):
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+class LinkedList(object):
+    def __init__(self, init_list=[]):
+        self.head = None
+        if len(init_list)>0:
+            last_node = Node(init_list[0])
+            self.head = last_node
+            for i in range(1, len(init_list)):
+                current_node = Node(init_list[i])
+                last_node.next = current_node
+                last_node = current_node
+        return self.head
+
+    def insert(self,value):
+        insert_node = Node(value)
+        flag = False
+        if self.head == None:
+            self.head =  insert_node
+
+        elif value <self.head.value:
+            insert_node.next = self.head
+            self.head = insert_node
+        else:
+            last_node =  self.head
+            cur_node = self.head.next
+            while cur_node != None:
+                if value < cur_node.value:
+                    last_node.next = insert_node
+                    insert_node.next = cur_node
+                    flag = True
+                    break
+                else:
+                    last_node = cur_node
+                    cur_node = cur_node.next
+            if flag == False:
+                last_node.next = insert_node
+
+        return self.head
+
+
+    def get_list(self):
+        s = []
+        cur_node = self.head
+        while cur_node != None:
+            s.append(cur_node.value)
+            last_node = cur_node
+            cur_node  =  cur_node.next
+        return s
+
+
+def bucket_sort(s1):
+    min = 0
+    max = 0
+    for i in range(len(s1)):
+        if s1[i] > max:
+            max = s1[i]
+        if s1[i] < min:
+            min = s1[i]
+
+    total_bucket_num = 5
+    one_bucket_range = (max - min + 1) / total_bucket_num
+
+    a = []
+    for i in range(total_bucket_num):
+        linkedlist = LinkedList([])
+        a.append(linkedlist)
+
+    for i in range(len(s1)):
+        current_num = int((s1[i]-min)/one_bucket_range)
+        print(s1[i],current_num,i)
+        a[current_num].insert(s1[i])
+
+    b = []
+    for i in range(total_bucket_num):
+        b = b + a[i].get_list()
+
+    return b
+
+
+def radix_sort(s1):
+    max_digit_num = 0
+    for i in range(len(s1)):
+        if  max_digit_num < (len(str(s1[i]))):
+            max_digit_num = len(str(s1[i]))
+
+
+    for i in range(0, max_digit_num):
+        bucket_list = [[] for i in range(10)]
+        for j in range(len(s1)):
+            cur_bucket_num = int(s1[j]/(10**i))%10
+            bucket_list[cur_bucket_num].append(s1[j])
+
+        s1 = []
+        for m in range(len(bucket_list)):
+            s1 = s1 + bucket_list[m]
+
+    return s1
+
+
 if __name__ == '__main__':
     old_list= [6, 1, 2, 7, 9, 3, 4, 5, 10, 8, 0]
+    A = [-1, 2, 0, 4, 3, 6, 5, 8, -2, 1, 3, 0, 3, 6, 5, 2]
+    a = [63, 157, 189, 51, 101, 47, 141, 121, 157, 156, 194, 117, 98, 139, 67, 133, 181, 13, 28, 109]
     #
     # print(quick_sort(old_list,0,9))
 
@@ -206,8 +332,10 @@ if __name__ == '__main__':
     # print(insertion_sort(old_list))
     # # print(bubble_sort(old_list))
     # print(selection_sort(old_list))
-
-    print(shell_sort(old_list))
+    # print(shell_sort(old_list))
+    # print(countsort(A))
+    # print(bucket_sort(a))
+    print(radix_sort(a))
 
 
 
