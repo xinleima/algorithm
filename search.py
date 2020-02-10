@@ -149,16 +149,39 @@ def exist(board, i, j, visited_list, word, row, col,current):
     return False
 
 
-if __name__ == '__main__':
-    board = [
-        ['A', 'B', 'C', 'E'],
-        ['S', 'F', 'C', 'S'],
-        ['A', 'D', 'E', 'E']
-    ]
+def bfs(maze,start,end,queue:list,current):
+    print(current)
+    if current == start:
+        queue.append(start)
+    if current == end:
+        return True
 
-    visited_list = [[False]*4 for i in range(3)]
+    if len(queue) == 0:
+        return False
+
+
+    for i in range(len(maze[current])):
+        if maze[current][i] == 1:
+            print(i)
+            queue.append(i)
+            queue
+
+    print(queue)
+    for i in range(len(queue)):
+        bfs(maze,start,end,queue,queue[-1])
+
+
+
+if __name__ == '__main__':
+    # board = [
+    #     ['A', 'B', 'C', 'E'],
+    #     ['S', 'F', 'C', 'S'],
+    #     ['A', 'D', 'E', 'E']
+    # ]
+    #
+    # visited_list = [[False]*4 for i in range(3)]
     # board, i, j, visited_list, word, row, col, current_num
-    print(exist(board, 0, 0, visited_list, "ABCF", 3, 4, 0))
+    # print(exist(board, 0, 0, visited_list, "ABCF", 3, 4, 0))
 
 
     #
@@ -168,3 +191,17 @@ if __name__ == '__main__':
     #     [8, 2, 0]
     # ]
     # print(longestIncreasingPath(nums))
+    maze= [
+        [0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 0, 1, 0]
+    ]
+
+    print(bfs(maze,0,2,[],0))
+
+
+
+
+
